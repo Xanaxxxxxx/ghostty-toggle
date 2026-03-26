@@ -35,17 +35,13 @@ python3 -m pip install .
 
 ### Homebrew
 
-This repo includes a Homebrew formula at
-[`Formula/ghostty-toggle.rb`](/Users/xana/Documents/Ghostty/Formula/ghostty-toggle.rb).
-
-After publishing a tagged release, you can install it with:
-
 ```bash
-brew install --formula https://raw.githubusercontent.com/Xanaxxxxxx/ghostty-toggle/main/Formula/ghostty-toggle.rb
+brew tap Xanaxxxxxx/tap
+brew install ghostty-toggle
 ```
 
-The formula expects a versioned release tarball. If you publish a new release,
-update the `url` and `sha256` in the formula.
+The tap repository is:
+[https://github.com/Xanaxxxxxx/homebrew-tap](https://github.com/Xanaxxxxxx/homebrew-tap)
 
 ## Commands
 
