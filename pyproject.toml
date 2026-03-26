@@ -30,6 +30,7 @@ classifiers = [
 
 [project.scripts]
 ghostty-toggle = "ghostty_toggle.cli:main"
+gtg = "ghostty_toggle.cli:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

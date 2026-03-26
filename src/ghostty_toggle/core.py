@@ -1034,7 +1034,8 @@ def cmd_toggle(args: argparse.Namespace) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="ghostty-toggle")
-    subparsers = parser.add_subparsers(dest="command", required=True)
+    parser.set_defaults(func=cmd_tui)
+    subparsers = parser.add_subparsers(dest="command", required=False)
 
     doctor = subparsers.add_parser("doctor", help="detect Ghostty and config paths")
     doctor.set_defaults(func=cmd_doctor)

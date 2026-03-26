@@ -48,6 +48,8 @@ The tap repository is:
 ## Commands
 
 ```bash
+ghostty-toggle
+gtg
 ghostty-toggle doctor
 ghostty-toggle options
 ghostty-toggle options --bool-only
@@ -56,6 +58,9 @@ ghostty-toggle set copy-on-select true
 ghostty-toggle toggle copy-on-select
 ghostty-toggle tui
 ```
+
+Running `ghostty-toggle` with no subcommand opens the TUI directly. A short
+alias, `gtg`, is also installed.
 
 ## TUI
 
