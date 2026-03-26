@@ -1,24 +1,51 @@
 # ghostty-toggle
 
-`ghostty-toggle` is a small CLI for Ghostty users who want a faster way to inspect
-their current configuration, discover options supported by the installed Ghostty
-version, and toggle boolean settings without hand-editing the main config file.
+`ghostty-toggle` is a terminal-native CLI/TUI for exploring and editing Ghostty
+configuration based on the version of Ghostty installed on your machine.
 
-## What It Does
+It reads `ghostty +show-config --default --docs`, discovers the options your
+current Ghostty build actually supports, reads your active config files, and
+writes managed overrides into a separate overlay file instead of forcing you to
+hand-edit your main config every time.
 
-- Detects the installed `ghostty` binary and version.
-- Reads `ghostty +show-config --default --docs` to discover available config keys.
-- Detects common Ghostty config file locations on macOS and XDG platforms.
-- Stores CLI-managed overrides in a dedicated overlay file.
-- Supports `doctor`, `options`, `get`, `set`, `toggle`, and `tui`.
-- Can optionally reload Ghostty on macOS via AppleScript.
-- Detects `ghostty` from `PATH` or common macOS app bundle locations.
+## Features
 
-## Install Locally
+- Detects `ghostty` from `PATH` or common macOS app bundle locations
+- Reads the installed Ghostty version and supported config keys dynamically
+- Detects common Ghostty config locations on macOS and XDG platforms
+- Writes CLI-managed overrides into `codex-toggles.conf`
+- Automatically adds `config-file = codex-toggles.conf` if needed
+- Supports `doctor`, `options`, `get`, `set`, `toggle`, and `tui`
+- Supports macOS config reload via AppleScript
+- Includes a lightweight two-pane terminal UI built with `prompt_toolkit`
+
+## Supported Systems
+
+- macOS: fully supported, including Ghostty detection from app bundles and optional config reload via AppleScript
+- Linux / XDG environments: supported for config discovery, CLI usage, and TUI editing
+- Windows: not supported
+
+## Install
+
+### Local Python install
 
 ```bash
 python3 -m pip install .
 ```
+
+### Homebrew
+
+This repo includes a Homebrew formula at
+[`Formula/ghostty-toggle.rb`](/Users/xana/Documents/Ghostty/Formula/ghostty-toggle.rb).
+
+After publishing a tagged release, you can install it with:
+
+```bash
+brew install --formula https://raw.githubusercontent.com/Xanaxxxxxx/ghostty-toggle/main/Formula/ghostty-toggle.rb
+```
+
+The formula expects a versioned release tarball. If you publish a new release,
+update the `url` and `sha256` in the formula.
 
 ## Commands
 
@@ -32,31 +59,57 @@ ghostty-toggle toggle copy-on-select
 ghostty-toggle tui
 ```
 
-## TUI Keys
+## TUI
 
-- `j` or down arrow: move down
-- `k` or up arrow: move up
-- `PageUp` or `PageDown`: jump faster
-- `Enter`: open an inline editor and type any value directly
-- `Space`, `l`, or right arrow: toggle or advance the selected option
-- `h` or left arrow: move to the previous selectable value for enum options
-- `f` or `/`: open search
-- `Ctrl+U`: clear the filter
-- `Tab`: cycle `All` / `Configured` / `Toggleable`
-- `1`, `2`, `3`: jump directly to `All`, `Configured`, `Toggleable`
-- `t`: quick toggle between `All` and `Toggleable`
-- `r`: ask Ghostty to reload config on macOS
+The TUI shows:
+
+- `Options` on the left
+- `Value`, `Default`, and documentation on the right
+- Separate scrollbars for the left list and right inspector
+
+### Keyboard
+
+- `j` / `Down`: move down
+- `k` / `Up`: move up
+- `PageUp` / `PageDown`: jump faster
+- `Enter`: edit the current value
+- `Left` / `h`: previous selectable value
+- `Right` / `l`: next selectable value
+- `f` or `/`: focus search
+- `Esc` in search: clear search and return to the list
+- `Ctrl-U` / `Ctrl-D`: scroll the inspector
+- `1`, `2`, `3`: switch to `All`, `Configured`, `Toggleable`
+- `Tab`: cycle focus
 - `q`: quit
 
-By default, the tool writes managed overrides into:
+### Mouse
+
+- Click an option to select it
+- Click `search:` to focus the search input
+- Scroll over `Options` to move the list
+- Scroll over `Inspector` to scroll the description
+
+## Config Files
+
+By default, managed overrides are written to:
 
 - macOS: `~/Library/Application Support/com.mitchellh.ghostty/codex-toggles.conf`
 - XDG: `~/.config/ghostty/codex-toggles.conf`
 
-If the main config does not already include that overlay file, `ghostty-toggle`
-adds a `config-file = codex-toggles.conf` line automatically.
+If your main Ghostty config does not already include that overlay file,
+`ghostty-toggle` adds:
 
-## Homebrew
+```conf
+config-file = codex-toggles.conf
+```
 
-This repo includes a starter formula in `Formula/ghostty-toggle.rb`. It expects a
-tagged release tarball. Update the `url` and `sha256` after publishing a release.
+## Notes
+
+- The available options come from your installed Ghostty, not a hardcoded list
+- Some Ghostty settings are reloadable at runtime, some are not
+- The tool is best suited for people who prefer editing config from the terminal
+
+## License
+
+This project is open source under the MIT License. See
+[`LICENSE`](/Users/xana/Documents/Ghostty/LICENSE).

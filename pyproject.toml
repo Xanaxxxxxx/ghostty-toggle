@@ -12,6 +12,9 @@ license = { text = "MIT" }
 authors = [
   { name = "Codex" }
 ]
+dependencies = [
+  "prompt_toolkit>=3.0.52,<4",
+]
 keywords = ["ghostty", "terminal", "cli", "config"]
 classifiers = [
   "Environment :: Console",
@@ -33,4 +36,3 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
