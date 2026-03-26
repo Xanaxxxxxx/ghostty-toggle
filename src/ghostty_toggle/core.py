@@ -21,6 +21,7 @@ VALID_VALUE_RE = re.compile(r"^\s*\*\s+`([^`]+)`")
 AVAILABLE_SINCE_RE = re.compile(r"Available since[:\s]+(.+?)\.?\s*$", re.IGNORECASE)
 BACKTICK_VALUE_RE = re.compile(r"`([^`]+)`")
 QUOTED_VALUE_RE = re.compile(r'"([^"]+)"')
+DOC_OPTION_HEADER_RE = re.compile(r"^\*\*`([a-z0-9][a-z0-9-]*)`\*\*$")
 
 
 @dataclass(slots=True)
@@ -217,9 +218,83 @@ def parse_options(show_config_output: str) -> dict[str, GhosttyOption]:
     return options
 
 
+def bundled_doc_path(ghostty_path: str) -> Path | None:
+    path = Path(ghostty_path)
+    candidates = [
+        path.parent.parent / "Resources" / "ghostty" / "doc" / "ghostty.5.md",
+        path.parent.parent / "Resources" / "ghostty" / "doc" / "ghostty.5",
+    ]
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def parse_bundled_doc_options(doc_text: str) -> dict[str, GhosttyOption]:
+    options: dict[str, GhosttyOption] = {}
+    current_key: str | None = None
+    current_lines: list[str] = []
+
+    def flush() -> None:
+        nonlocal current_key, current_lines
+        if not current_key:
+            return
+        docs = tuple(line for line in current_lines if line)
+        option = GhosttyOption(
+            key=current_key,
+            docs=docs,
+            valid_values=extract_valid_values(docs),
+        )
+        for comment_line in docs:
+            available_since_match = AVAILABLE_SINCE_RE.search(comment_line)
+            if available_since_match:
+                option.available_since = available_since_match.group(1).strip().rstrip(".")
+        options[current_key] = option
+        current_key = None
+        current_lines = []
+
+    for raw_line in doc_text.splitlines():
+        line = raw_line.rstrip()
+        header_match = DOC_OPTION_HEADER_RE.match(line.strip())
+        if header_match:
+            flush()
+            current_key = header_match.group(1)
+            continue
+
+        if current_key is None:
+            continue
+
+        stripped = line.strip()
+        if stripped == ":" or stripped == "":
+            current_lines.append("")
+            continue
+        if line.startswith(":   "):
+            current_lines.append(line[4:].strip())
+            continue
+        if line.startswith("    "):
+            current_lines.append(line.strip())
+            continue
+        if not stripped:
+            current_lines.append("")
+
+    flush()
+    return options
+
+
 def load_supported_options(ghostty_path: str) -> dict[str, GhosttyOption]:
     output = run_command([ghostty_path, "+show-config", "--default", "--docs"])
-    return parse_options(output)
+    options = parse_options(output)
+
+    doc_path = bundled_doc_path(ghostty_path)
+    if doc_path:
+        try:
+            bundled_options = parse_bundled_doc_options(doc_path.read_text(encoding="utf-8"))
+        except OSError:
+            bundled_options = {}
+        for key, option in bundled_options.items():
+            options.setdefault(key, option)
+
+    return options
 
 
 def detect() -> DetectionResult:
