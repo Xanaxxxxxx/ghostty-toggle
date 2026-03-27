@@ -3,8 +3,8 @@ class GhosttyToggle < Formula
 
   desc "Terminal UI for exploring and editing Ghostty config"
   homepage "https://github.com/Xanaxxxxxx/ghostty-toggle"
-  url "https://github.com/Xanaxxxxxx/ghostty-toggle/archive/refs/tags/v0.1.2.tar.gz"
-  sha256 "b07f342562164219b7c8abf9ea9b35f7e4c3440ce420ac302dbb704df99be5c9"
+  url "https://github.com/Xanaxxxxxx/ghostty-toggle/archive/refs/tags/v0.1.3.tar.gz"
+  sha256 "7cf203d74e817e766ad6633ee8fdcbe8162fb3d9db62a029883fb875943bd3a3"
   license "MIT"
 
   depends_on "python@3.13"
