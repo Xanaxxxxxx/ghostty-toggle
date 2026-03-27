@@ -35,6 +35,11 @@ class GhosttyOption:
     @property
     def is_toggleable(self) -> bool:
         explicit_values = {value.lower() for value in self.valid_values}
+        if explicit_values:
+            if explicit_values == BOOLEAN_HINTS:
+                return True
+            if BOOLEAN_HINTS.issubset(explicit_values):
+                return False
         if BOOLEAN_HINTS.issubset(explicit_values):
             return True
         mentioned = {
@@ -545,6 +550,8 @@ def validate_option_value(option: GhosttyOption, value: str) -> str:
     candidate = value.strip()
     if not candidate:
         raise GhosttyToggleError("value cannot be empty")
+    if option.valid_values and candidate in option.valid_values:
+        return candidate
     if option.is_toggleable:
         return normalize_bool(candidate)
     if option.valid_values and candidate not in option.valid_values:

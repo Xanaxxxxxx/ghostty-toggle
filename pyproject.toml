@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ghostty-toggle"
-version = "0.1.2"
+version = "0.1.3"
 description = "CLI for detecting Ghostty options and toggling user config values."
 readme = "README.md"
 requires-python = ">=3.11"

@@ -19,7 +19,7 @@ hand-edit your main config every time.
 - Automatically adds `config-file = codex-toggles.conf` if needed
 - Supports `doctor`, `options`, `get`, `set`, `toggle`, and `tui`
 - Supports macOS config reload via AppleScript
-- Includes a lightweight two-pane terminal UI built with `prompt_toolkit`
+- Includes a lightweight terminal UI built with `prompt_toolkit`
 
 ## Supported Systems
 
@@ -66,29 +66,27 @@ alias, `gtg`, is also installed.
 
 The TUI shows:
 
-- `Options` on the left
-- `Value`, `Default`, and documentation on the right
-- Separate scrollbars for the left list and right inspector
+- `Categories`, `Options`, and `Inspector`
+- The current value, default value, and option docs in the inspector
+- Separate scrollbars for the option list and inspector
+- A top search field for live filtering
 
 ### Keyboard
 
-- `j` / `Down`: move down
-- `k` / `Up`: move up
-- `PageUp` / `PageDown`: jump faster
+- `Left` / `Right`: move focus between columns
+- `Up` / `Down`: move within the focused column
+- `PageUp` / `PageDown`: jump faster in the option list
 - `Enter`: edit the current value
-- `Left` / `h`: previous selectable value
-- `Right` / `l`: next selectable value
+- `h` / `l` / `Space`: move between selectable values
 - `f` or `/`: focus search
 - `Esc` in search: clear search and return to the list
 - `Ctrl-U` / `Ctrl-D`: scroll the inspector
-- `1`, `2`, `3`: switch to `All`, `Configured`, `Toggleable`
-- `Tab`: cycle focus
 - `q`: quit
 
 ### Mouse
 
-- Click an option to select it
-- Click `search:` to focus the search input
+- Click a category or option to select it
+- Click the search field to focus it
 - Scroll over `Options` to move the list
 - Scroll over `Inspector` to scroll the description
 

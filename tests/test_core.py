@@ -89,6 +89,22 @@ cursor-style = block
         with self.assertRaises(GhosttyToggleError):
             validate_option_value(option, "light")
 
+    def test_validate_option_value_accepts_mixed_boolean_special_value(self) -> None:
+        option = GhosttyOption(
+            key="background-blur",
+            default="false",
+            valid_values=("false", "true", "macos-glass-regular", "macos-glass-clear"),
+            docs=(
+                "Whether to blur the background when `background-opacity` is less than 1.",
+                "* `false` - disable blur",
+                "* `true` - default blur",
+                "* `macos-glass-regular` - native glass",
+            ),
+        )
+        self.assertEqual(validate_option_value(option, "macos-glass-regular"), "macos-glass-regular")
+        self.assertFalse(option.is_toggleable)
+        self.assertEqual(cycle_option_value(option, "true"), "macos-glass-regular")
+
     def test_configured_items_sort_first(self) -> None:
         options = [
             GhosttyOption(key="z-last"),
