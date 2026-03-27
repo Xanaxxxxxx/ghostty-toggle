@@ -29,21 +29,12 @@ hand-edit your main config every time.
 
 ## Install
 
-### Local Python install
-
 ```bash
-python3 -m pip install .
+brew install Xanaxxxxxx/tap/ghostty-toggle
 ```
 
-### Homebrew
-
-```bash
-brew tap Xanaxxxxxx/tap
-brew install ghostty-toggle
-```
-
-The tap repository is:
-[https://github.com/Xanaxxxxxx/homebrew-tap](https://github.com/Xanaxxxxxx/homebrew-tap)
+The Homebrew tap is:
+[Xanaxxxxxx/homebrew-tap](https://github.com/Xanaxxxxxx/homebrew-tap)
 
 ## Commands
 

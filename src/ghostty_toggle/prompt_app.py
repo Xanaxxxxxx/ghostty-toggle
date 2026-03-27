@@ -147,7 +147,6 @@ class GhosttyPromptApp:
         self.options_control = OptionsControl(self)
         self.description_control = DescriptionControl(self)
         self.header_control = FormattedTextControl(text=self._render_header)
-        self.save_info_control = FormattedTextControl(text=self._render_save_info)
         self.status_control = FormattedTextControl(text=self._render_status)
         self.options_scrollbar_control = FormattedTextControl(text=self._render_options_scrollbar, focusable=False)
         self.description_scrollbar_control = FormattedTextControl(text=self._render_description_scrollbar, focusable=False)
@@ -168,7 +167,7 @@ class GhosttyPromptApp:
             style="class:search-field",
         )
         self.save_info_window = Window(
-            content=self.save_info_control,
+            content=FormattedTextControl(text=""),
             height=1,
             width=Dimension(weight=3, min=36),
             always_hide_cursor=True,
@@ -766,15 +765,6 @@ class GhosttyPromptApp:
         if not option:
             return [("class:muted", "unset")]
         return [("class:value", option.key)]
-
-    def _render_save_info(self) -> StyleAndTextTuples:
-        width = self.save_info_window.render_info.window_width if self.save_info_window.render_info is not None else 36
-        text = self.state.message
-        if len(text) > width:
-            text = text[: max(0, width - 1)]
-        else:
-            text = text.ljust(width)
-        return [("class:save-info", text)]
 
     def _render_categories(self) -> StyleAndTextTuples:
         fragments: StyleAndTextTuples = []
