@@ -1,6 +1,6 @@
 # ghostty-toggle
 
-![ghostty-toggle screenshot](./Screenshot%202026-03-26%20at%2012.02.53.png)
+![ghostty-toggle screenshot](./Screenshot%202026-03-27%20at%2011.14.24.png)
 
 `ghostty-toggle` is a terminal-native CLI/TUI for exploring and editing Ghostty
 configuration based on the version of Ghostty installed on your machine.
